@@ -1,5 +1,10 @@
 {
   "current": {
-    "customer_layout": "theme"
+    "customer_layout": "theme",
+    "show-instagram-widget": false,
+    "instagram-title": "",
+    "instagram-access-token": "",
+    "show-instagram-tag": false,
+    "instagram-tag": ""
   }
 }

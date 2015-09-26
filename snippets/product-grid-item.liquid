@@ -1,0 +1,46 @@
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+  {% endcomment %}
+  <div style="overflow:hidden;">
+      <a class="product-badge" href="{{product.url}}">
+         <section>
+             <h2>{{product.price | money }}</h2>
+             <h4>{{product.title}}</h4>
+             <p>{{product.description | truncatewords: 6 }}</p>
+         </section>
+      </a>
+      {% if product.metafields.c_f.video_url_mp4 %}
+          <video loop style="margin-left: -60%; height: 100%">
+              <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/webm">
+              <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/mp4">
+          </video>
+      {% else %}
+          <section class="cover" style="background-image: url('{{ product.featured_image | product_img_url: '2048x2048' }}'), url('{{ product.featured_image | product_img_url: '2048x2048' }}' );"></section>
+      {% endif %}
+  </div>

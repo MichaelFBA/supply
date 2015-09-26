@@ -2,8 +2,11 @@
   "name": "foundationify",
   "version": "0.0.4",
   "dependencies": {
-    "foundation": "~5.4.7",
-    "fontawesome": "~4.2.0"
+    "bootstrap": "~3.3.5",
+    "jquery": "1.10.2"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "jquery": "1.10.2"
+  }
 }

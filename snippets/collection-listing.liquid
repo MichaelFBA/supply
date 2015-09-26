@@ -1,27 +1,54 @@
-<div class="row">
-    <div class="small-12 columns">
-
-        <h3>Collections</h3>
-        <hr>
-
-        <ul class="small-block-grid-2 large-block-grid-3">
-            {% for collection in collections %}
-                {% unless collection.handle == 'frontpage' %}
-                    <li>
-                        <a href="{{ collection.url }}">
-                            {% if collection.image %}
-                                <img class="th" src="{{ collection.image.src | collection_img_url: 'large' }}" alt="{{ collection.title | escape }}">
-                            {% else %}
-                                <img class="th" src="{{ collection.products.first.featured_image | product_img_url: 'large' }}" alt="{{ collection.title | escape }}">
-                            {% endif %}
+<div id="fullpage">
+    <div class="section" id="accessories">
+        <div class="slickFullHeight">
+            {% for product in collections.accessories.products %}
+                <div style="overflow:hidden;">
+                    <section class="product-content-home pam">
+                        <a class="product-badge" style="bottom:0px; right:0px;" href="{{product.url}}">
+                           <section>
+                               <h2>{{product.price | money }}</h2>
+                               <h4>{{product.title}}</h4>
+                               <p>{{product.description | truncatewords: 6 }}</p>
+                           </section>
                         </a>
-                        <h5 class="subheader"><a href="{{ collection.url }}">{{ collection.title }}</a></h5>
-                        <p>{{ collection.all_products_count }} {{ collection.all_products_count | pluralize: 'item', 'items' }}</p>
-                        <hr>
-                    </li>
-                {% endunless %}
+                    </section>
+                    {% if product.metafields.c_f.video_url_mp4 %}
+                        <video loop style="margin-left: -60%; height: 100%">
+                            <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/webm">
+                            <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/mp4">
+                        </video>
+                    {% else %}
+                        <section class="cover" style="background-image: url('{{ product.featured_image | product_img_url: '2048x2048' }}'), url('{{ product.featured_image | product_img_url: '2048x2048' }}' );"></section>
+                    {% endif %}
+                </div>
             {% endfor %}
-        </ul>
-
+        </div>
     </div>
+        <div class="section" id="clothing">
+        <div class="slickFullHeight">
+            {% for product in collections.clothing.products %}
+                <div style="overflow:hidden;">
+                    <section class="product-content-home pam">
+                        <a class="product-badge" style="bottom:0px; right:0px;" href="{{product.url}}">
+                           <section>
+                               <h2>{{product.price | money }}</h2>
+                               <h4>{{product.title}}</h4>
+                               <p>{{product.description | truncatewords: 6 }}</p>
+                           </section>
+                        </a>
+                    </section>
+                    {% if product.metafields.c_f.video_url_mp4 %}
+                        <video loop style="margin-left: -60%; height: 100%">
+                            <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/webm">
+                            <source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/mp4">
+                        </video>
+                    {% else %}
+                        <section class="cover" style="background-image: url('{{ product.featured_image | product_img_url: '2048x2048' }}'), url('{{ product.featured_image | product_img_url: '2048x2048' }}' );"></section>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
+<div id="socialInteractive"></div>

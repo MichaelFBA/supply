@@ -1,51 +1,31 @@
-<div class="row">
-    <div class="small-12 columns">
-
-		{% paginate collection.products by 12 %}
-
-	    	<ul class="breadcrumbs">
-	            <li><a href="/">Home</a></li>
-	            <li><a href="/collections/">Collections</a>
-	            <li class="current"><a href="{{ collection.url }}">{{ collection.title }}</a></li>
-	        </ul>
-
-			{% if collection.products.size == 0 %}
-				
-				<p>No products were found in this collection.</p>
-
-			{% else %}
-
-				<h3>{{ collection.title }}</h3>
-				
-				{{ collection.description }}
-
-		        {% if collection.all_tags.size > 0 %}
-		        	<dl class="sub-nav">
-		        		<dt>Filter:</dt>
-						<dd{% unless current_tags %} class="active"{% endunless %}><a href="/collections/{{ collection.handle }}">All</a></dd>
-						{% for tag in collection.all_tags %}
-							{% if current_tags contains tag %}
-								<dd class="active">{{ tag | link_to_remove_tag: tag }}</dd>
-							{% else %}
-								<dd>{{ tag | link_to_tag: tag }}</dd>
-							{% endif %}
-						{% endfor %}
-					</dl>
-				{% endif %}
-
-				<hr>
-
-				<ul class="small-block-grid-2 medium-block-grid-3">
-					{% for product in collection.products %}
-						{% include 'product' with product %}
-					{% endfor %}
-				</ul>
-					
-				{% include 'pagination' %}
-
-			{% endif %}
-
-		{% endpaginate %}
-
+<div id="fullpage">
+	<div class="section" id="accessories">
+		<div class="slickFullHeight">
+			{% for product in collection.products %}
+				<div style="overflow:hidden;">
+					<section class="product-content-home pam">
+						<a href="{{ product.url }}" class="">
+							<h6 class="man">{{ product.title }}<i class="mls mdi-navigation-arrow-forward color1"></i></h6>
+							<small><i class="mdi-maps-local-offer red-text inlineBlock relative"></i></small>
+							{% for tag in product.tags %}
+								<a href="collections/all/{{ tag }}" class="red-text">- {{ tag }}</a>
+							{% endfor %}
+						</a>
+					</section>
+					{% if product.metafields.c_f.video_url_mp4 %}
+						<video loop style="margin-left: -60%; height: 100%">
+							<source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/webm">
+							<source src="{{ product.metafields.c_f.video_url_mp4 }}" type="video/mp4">
+						</video>
+					{% else %}
+						<section class="cover" style="background-image: url('{{ product.featured_image | product_img_url: '2048x2048' }}'), url('{{ product.featured_image | product_img_url: '2048x2048' }}' );"></section>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
 	</div>
+</div>
+
+<div class="socialInteractive">
+
 </div>

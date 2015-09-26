@@ -1,78 +1,29 @@
-<div class="row">
-    <div class="small-12 columns">
-        <ul class="breadcrumbs">
-            <li><a href="/">Home</a></li>
-            <li><a href="/collections/">Collections</a>
-            <li>{{ product.type | link_to_type }}</li>
-        </ul>
-    </div>
-</div>
-
-<div class="row">
-    <form class="custom" action="/cart/add" method="post">
-        <div class="small-12 medium-6 push-6 columns">
-
-            <h3>{{ product.title }}</h3>
-
-            <h5 class="subheader">{{ product.vendor | link_to_vendor  }}</h5>
-
-            <hr>
-
-            {% if product.available %}
-
-                {% if product.variants.size == 1 %}
-
-                    <h4>
-                        {% if product.variants.first.compare_at_price > 0 %}<del>{{ product.variants.first.compare_at_price | money }}</del> {% endif %}
-                        {{ product.variants.first.price | money }}
-                    </h4>
-                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-
-                {% else %}
-
-                    <h4>
-                        {% assign checked = true %}
-                        {% for variant in product.variants %}
-                            <label for="radio">
-                                <input name="id" type="radio" id="radio" value="{{ variant.id }}"
-                                    {% if variant.available == false %}
-                                        disabled
-                                    {% elsif checked %}
-                                        checked{% assign checked = false %}
-                                    {% endif %}>
-                                <span class="custom radio"></span> {{ variant.title }} – {% if variant.compare_at_price > 0 %}<del>{{ variant.compare_at_price | money }}</del> {% endif %}{{ variant.price | money }}
-                            </label>
-                        {% endfor %}
-                    </h4>
-
-                {% endif %}
-
-                <button class="button" type="submit"><i class="fa fa-shopping-cart"></i> Add to cart</button>
-
-            {% else %}
-                <p>Sorry, the product is not available.</p>
-            {% endif %}
-
-            <h5>Description</h5>
-
-            {{ product.description }}
-
+<aside class="container-fluid h100">
+    <div class="row h100">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-8 h100" id="product">
         </div>
-    </form>
-
-    <div id="product-images" class="small-12 medium-6 pull-6 columns">
-        <p><img class="th" src="{{ product.featured_image | product_img_url: 'grande' }}" alt="{{ product.title | escape }}"></p>
-
-        {% if product.images.size > 1 %}
-            <ul class="medium-block-grid-4">
-                {% for image in product.images %}
-                    <li><a href="{{ image | product_img_url: 'grande' }}" title="{{ product.title }}"><img class="th" src="{{ image | product_img_url: 'small' }}" alt="{{ product.title | escape }}"></a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
     </div>
-</div>
+</aside>
 
+<form action="/cart/add" method="post" class="hide">
+  <div id="product-variants">
+      <div id="price-field"></div>
+      <select id="product-select" name="id" class="form-control">
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+        {% endfor %}
+      </select>
+  </div>
+  <button type="submit" name="add" value="Purchase" id="purchase" class="btn btn-primary">Buy</button>
+</form>
 
+<!-- Tags -->
+{% for tag in product.tags %}
+    {% include tag %}
+{% endfor %}
 
+{% include 'size-modal' %}
+{% include 'color-modal' %}
+{% include 'info-modal' %}
 
+{% include 'related-products' %}

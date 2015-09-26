@@ -1,0 +1,55 @@
+{% assign product = collections.about-product.products.first %}
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe src="https://player.vimeo.com/video/134132784?autoplay=0&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
+
+<div class="container mvh">
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <h1>{{page.title}}</h1>
+    	</div>
+        <div class="col-xs-12">
+             <img class="img-responsive" src="{{product.images[0] | product_img_url: 'original'}}"/>
+             <a class="product-badge" style="bottom:0px; right:0px;" href="{{product.url}}">
+                <section>
+                    <h2>{{product.price | money }}</h2>
+                    <h4>{{product.title}}</h4>
+                    <p>{{product.description | truncatewords: 6 }}</p>
+                </section>
+             </a>
+
+        </div>
+        {{page.content}}
+    </div>
+</div>
+
+
+
+<section class="dark-bg">
+    <div class="container pvh">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h1 class="mbl">Cotton to canvas to you</h1>
+        	</div>
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3 mbl">
+                 <p>The process of supply demands respect. Respect for the goods being sourced. Respect for the places they’re coming from. It demands careful selection. Speed. Efficiency. An end product that suits the purpose. That looks good. That lasts. That doesn’t cost the earth. The quality of the things you own depend on the way they’re supplied to you. It’s up to us to make sure it’s done right. </p>
+            </div>
+            <div class="col-xs-12 text-center">
+                <img class="img-responsive" src="https://cdn.shopify.com/s/files/1/0792/8597/files/trees.png?17661591537383969881"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container h100">
+    <div class="row h100">
+        <div class="col-xs-12 col-sm-6 pvh">
+            <h1 class="mbl">What next?<br> It’s up to you.</h1>
+            <p>But if you want to know the finer details, they’re all there for you to read. We’re happy for you to know that we use long staple instead of short staple cotton (so it can be twisted more, and becomes super strong), our leather is vegetable tanned rather than chemical tanned (for a softer finish), we use a mix of hand and machine manufacturing (so we can ensure the highest quality, but in the most efficient way).</p>
+            <p>We think it’s your right to know exactly where the things you hold and wear came from.</p>
+        </div>
+        <div class="col-xs-12 col-sm-6 h100" id="signUpInteractive">
+        </div>
+    </div>
+</div>
