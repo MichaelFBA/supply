@@ -20,7 +20,6 @@ $(document).ready(function() {
     var screenW = $('#home').width();
     var screenH = $('#home').height();
     var anchor = new Vec3(screenW / 2, screenH / 2, 0);
-    var messages = ["Learn more about the world's best materials and craftspeople", "Find out about new products we produce them.", "Yes, maybe get a discount every so often"];
     console.log(famous)
 
     //Create Walls
@@ -83,10 +82,8 @@ $(document).ready(function() {
 
       //Create Email input
       createProductName.call(this);
-      //Create Size
-      for (var i = 0; i < messages.length; i++) {
-        createText.call(this, messages[i]);
-      }
+      //Create Mesage
+      createText.call(this);
       //Create buy
       createBuy.call(this);
       //Create Images
@@ -194,26 +191,26 @@ $(document).ready(function() {
       var node = this.scene.addChild();
       var mp = new MountPoint(node).set(0.5, 0.5);
       node.setSizeMode('absolute', 'absolute')
-        .setAbsoluteSize(130, 130);
+        .setAbsoluteSize(250, 250);
       var position = new Position(node);
-      var radius = 65;
+      var radius = 125;
       var x = Math.round(Math.random() * screenW) - radius;
       var y = Math.round(Math.random() * screenH) - radius;
       var el = new DOMElement(node, {
-        content: '<div class="pam vText"><span>' + text + '</span></div>',
+        content: '<h1 class="pam vText"><span>Made good</span></h1>',
         properties: {
           'background-color': '#000000',
           'border-radius': '50%',
           'color': '#ffffff',
           'font-weight': 'normal',
           'text-align': 'center',
-          'line-height': '125px',
-          'min-height': '130px'
+          'line-height': '250px',
+          'min-height': '250px'
         }
       });
 
       var satellite = new Sphere({
-        radius: 65,
+        radius: 125,
         mass: mass,
         position: new Vec3(x, y, 0),
         restitution: restitution,
@@ -243,12 +240,9 @@ $(document).ready(function() {
       var x = Math.round(Math.random() * screenW) - radius;
       var y = Math.round(Math.random() * screenH) - radius;
       var el = new DOMElement(node, {
+        content: '<a href="/products/' + products[imageNo].handle + '" target="_parent" style="background-image: url(' + products[imageNo].images[0].src + '); display: inline-block; background-size: cover; border-radius: 50%; width:100%; height:100%;border: 2px solid; border-color: #000000;">&nbsp</a>',
         properties: {
-          'background-image': 'url(' + products[imageNo].images[0].src + ')',
-          'background-size': 'cover',
           'border-radius': '50%',
-          'border': '2px solid',
-          'border-color': '#000000',
         },
         classes: ['pointer']
       });
@@ -272,20 +266,6 @@ $(document).ready(function() {
       this.simulation.add(satellite, spring);
       this.items.push([satellite, position]);
       this.collision.addTarget(satellite);
-      node.addUIEvent('mousemove');
-
-      //Geature Events
-      var nodeGesture = new gestures(node);
-      node.addComponent({
-        onReceive: function(e, payload) {
-          if (e === 'mouseup') {
-            var attributes = el.getValue('attributes');
-            $('aside').backstretch(attributes.attributes['data-img'], {
-              fade: 250
-            });
-          }
-        }
-      });
 
     }
 
@@ -349,11 +329,12 @@ $(document).ready(function() {
 
     $.ajax({
       method: "GET",
-      url: "/admin/products.json",
+      url: "products.json",
       headers: {
         'Authorization': 'Bearer 770e9364a8bac3c43e214e86ba73d333'
       }
     }).done(function(data) {
+      console.log(data);
       products = data.products;
       var demo = new Demo();
     })

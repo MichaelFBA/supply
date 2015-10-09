@@ -38,10 +38,10 @@
         <nav id="menu">
             <div class="pas">
                 <ul class="list-unstyled"  data-cart-view="data-cart-view">
-                    <li rv-each-item="cart.items">
+                    <li rv-each-item="cart.items" rv-show="cart.item_count | gt 0">
                         <section class="card">
                             <h4 class="phs" rv-text="item.product_title"></h4>
-                            <div class="img-holder" rv-bg="item.image | productImageSize 'large'"></div>
+                            <div class="img-holder mbs" rv-bg="item.image | productImageSize 'large'"></div>
                             <p class="phs mbn" rv-hide="item.variant_options | empty">Options:</p>
                             <ul class="list-unstyled phs" rv-hide="item.variant_options | empty">
                                 <li rv-each-item="item.variant_options">
@@ -64,11 +64,11 @@
                         </section>
                     </li>
                     <li rv-show="cart.item_count | lt 1">
-                        <div class="row">
-                            <div class="col-xs-12 text-center">
-                                <h5 class="strong">You don't have any items in your cart.</h5>
-                            </div>
-                        </div>
+                        <section class="card">
+                            <h4 class="phs">You don't have any items in your cart.</h4>
+                            <div class="img-holder" style="background-image: url('https://johnfrady175by43.files.wordpress.com/2011/12/empty-closet.jpg')"></div>
+                        </section>
+                        <h5 class="strong text-center text-muted"><span class="bbs pbs">Our new products</span></h5>
                     </li>
                     <li rv-show="cart.item_count | gt 0">
                         <div class="row">
@@ -91,11 +91,11 @@
 
         <section id="panel" class="h100">
 
-          <div class="logo"></div>
+          <a id="brand" href="/" target="_parent"><div class="logo"></div></a>
           <div id="supply-cart" class="toggle-button">
             <button type="button" class="btn btn-link btn-lg">
                 <i class="fa fa-shopping-cart"></i>
-                <span class="cart-count" data-cart-render="item_count"></span>
+                <!-- <span class="cart-count" data-cart-render="item_count"></span> -->
             </button>
           </div>
 

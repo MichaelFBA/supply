@@ -361,16 +361,19 @@ p{
 .logo {
     width: 100px;
     height:200px;
+}
+#brand{
     position: fixed;
     top:0px;
     left:0px;
-    z-index: 9999;
+    z-index: 1000;
+    display: inline-block;
 }
 #supply-cart{
     position: fixed;
     top:0px;
     right: 0px;
-    z-index: 9999;
+    z-index: 1000;
     .dropdown-menu{
 
     }
@@ -485,7 +488,6 @@ p{
         background-size: cover;
         min-height: 140px;
         background-position: center center;
-        margin-bottom: 10px;
     }
 }
 
@@ -779,7 +781,7 @@ footer {
 
 .slideout-panel {
   position:relative;
-  z-index: 1;
+  z-index: 1050;
 }
 
 .slideout-open,

@@ -45,9 +45,8 @@ $(document).ready(function() {
     var mass = 10,
       restitution = 0, // if the body rests
       friction = 0.3,
-      stiffness = 30, // how fast it attracts to the center
-      damping = -1;
-
+      stiffness = 10, // how fast it attracts to the center
+      damping = 0;
 
     function Demo() {
       this.scene = FamousEngine.createScene('#signUpInteractive');

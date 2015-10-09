@@ -63,10 +63,10 @@ $(document).ready(function() {
     var screenW = $('#product').width();
     var screenH = $('#product').height();
     var anchor = new Vec3(screenW / 2, screenH / 2, 0);
+    var centerPoint = new Vec3(screenW / 2, screenH / 2, 0);
+    var productScene;
     console.log('width', screenW)
     console.log('height', screenH)
-    console.log(famous)
-    console.log('anchor', anchor)
 
     //Create Walls
     var rightWall = new Wall({
@@ -82,7 +82,6 @@ $(document).ready(function() {
       direction: Wall.UP
     }).setPosition(0, screenH - 10, 0);
     var walls = [topWall, rightWall, bottomWall, leftWall];
-    var centerPoint;
 
     //Same friction
     var mass = 10,
@@ -94,6 +93,8 @@ $(document).ready(function() {
 
     function Demo() {
       this.scene = FamousEngine.createScene('#product');
+      productScene = this.scene;
+      console.log('scene', this.scene);
       // this.collision = new collision.({broadphase: 'BruteForce'});
       var broadPhase = new physics.Collision.BruteForceAABB([rightWall, leftWall, topWall, bottomWall]);
       this.collision = new collision([topWall], {
@@ -101,67 +102,41 @@ $(document).ready(function() {
       });
 
       this.simulation = new PhysicsEngine();
-      console.log('simulation', this.simulation)
       this.simulation.setOrigin(0.5, 0.5);
       this.simulation.addConstraint(this.collision);
       this.items = [];
       this.walls = [];
 
       //Testing user iteraction
-      var parent = this.scene.addChild()
-      parent.setAlign(0.5, 0.5)
-        .setMountPoint(0.5, 0.5)
-        .setSizeMode('absolute', 'absolute', 'absolute')
-        .setAbsoluteSize(screenW, screenH)
-
-
-      // Styled grey textarea
-      parent.el = new DOMElement(parent, {
-        tagName: 'div',
-        properties: {
-          'background': 'transparent'
-        }
-      })
-
-      parent.addUIEvent('mousemove');
-      parent.addUIEvent('mouseout');
-      //   parent.addComponent({
+      //   var parent = this.scene.addChild()
+      //   parent.setAlign(0.5, 0.5)
+      //     .setMountPoint(0.5, 0.5)
+      //     .setSizeMode('absolute', 'absolute', 'absolute')
+      //     .setAbsoluteSize(screenW, screenH)
+      //
+      //   parent.el = new DOMElement(parent, {
+      //     tagName: 'div',
+      //     properties: {
+      //       'background': 'transparent'
+      //     }
+      //   })
+      //
+      //   parent.addUIEvent('mousemove');
+      //   parent.addUIEvent('mouseout');
+      //
+      //   this.scene.addComponent({
       //     onReceive: function(e, payload) {
       //       console.log(e, payload)
       //       if (e == "mousemove") {
       //         var pos = payload.node.getPosition()
-      //         // anchor.x = pos[0];
-      //         // anchor.y = pos[1];
       //         anchor.x = payload.offsetX;
       //         anchor.y = payload.offsetY;
       //       }
       //       if (e == "mouseout") {
       //         var pos = payload.node.getPosition()
-      //         anchor.x = payload.offsetX;
-      //         anchor.y = payload.offsetY;
       //       }
       //     }
-      //   })
-
-      //   this.scene.addUIEvent('mousemove');
-      //   console.log('scene', this.scene);
-      this.scene.addComponent({
-        onReceive: function(e, payload) {
-          console.log(e, payload)
-          if (e == "mousemove") {
-            var pos = payload.node.getPosition()
-            // anchor.x = pos[0];
-            // anchor.y = pos[1];
-            anchor.x = payload.offsetX;
-            anchor.y = payload.offsetY;
-          }
-          if (e == "mouseout") {
-            var pos = payload.node.getPosition()
-          // anchor.x = screenW / 2;
-          // anchor.y = screenH / 2;
-          }
-        }
-      });
+      //   });
 
       // var horizontalRule = this.scene.addChild()
       //   .setSizeMode(0, 1, 1)
@@ -275,23 +250,23 @@ $(document).ready(function() {
         classes: ['product-title']
       });
 
-      centerPoint = new Sphere({
+      var sphere = new Sphere({
         radius: 62.5,
         mass: 100000,
         restrictions: ['xy'],
-        position: new Vec3(screenW / 2, screenH / 2, 0)
+        position: centerPoint
       });
 
-      var spring = new Spring(null, centerPoint, {
+      var spring = new Spring(null, sphere, {
         stiffness: 95,
         period: 0.6,
         dampingRatio: 1.0,
         anchor: new Vec3(screenW / 2, screenH / 2, 0)
       });
-      centerPoint.setVelocity(0, 0, 0);
-      this.simulation.add(centerPoint, spring);
-      this.items.push([centerPoint, position]);
-      this.collision.addTarget(centerPoint); console.log(this.simulation);
+      sphere.setVelocity(0, 0, 0);
+      this.simulation.add(sphere, spring);
+      this.items.push([sphere, position]);
+      this.collision.addTarget(sphere); console.log(this.simulation);
       node.addUIEvent('mousemove');
     }
 
@@ -532,7 +507,7 @@ $(document).ready(function() {
           if (e === 'mouseup') {
             var attributes = el.getValue('attributes');
             $('aside').backstretch(attributes.attributes['data-img'], {
-              fade: 250
+              fade: 4000
             });
           }
         }
@@ -547,14 +522,29 @@ $(document).ready(function() {
     // App Code
     var demo = new Demo();
 
+    //mobile
+    $(window).resize(function() {
+      //   resize();
+    });
+
+    // function resize() {
+    //   if ($(this).width() <= 480) {
+    //     //mobile
+    //     productScene.setScale(0.7, 0.7);
+    //   } else if ($(this).width() > 480) {
+    //     productScene.setScale(0.7, 0.7);
+    //   }
+    // }
+
     createSlider();
-    movePricingBadge()
+    movePricingBadges()
+  // resize()s
   }
 
 
 });
 
-function movePricingBadge() {
+function movePricingBadges() {
   console.log('move');
   $('.product-badge').each(function(index, value) {
     var min = 40;
